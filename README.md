@@ -55,16 +55,17 @@ python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 ```
 
-Install the Python packages:
+Install the project dependencies:
 
 ```powershell
 python -m pip install --upgrade pip
-python -m pip install flask flask-wtf flask-bootstrap wtforms pillow tqdm
+python -m pip install -r requirements.txt
 ```
 
-Install **PyTorch and torchvision** using the command recommended by the
-[official PyTorch installation selector](https://pytorch.org/get-started/locally/).
-Choose the CPU build or the CUDA build matching your machine.
+The requirements include PyTorch and torchvision. If you need a specific
+PyTorch build, install the version recommended by the
+[official PyTorch installation selector](https://pytorch.org/get-started/locally/)
+for your operating system and CPU/CUDA setup.
 
 ## Run the web app
 
