@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Features | NeuralArt</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            min-height: 100vh;
+            color: #e2e8f0;
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+            background-image:
+                linear-gradient(rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.95)),
+                url('https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?q=80&w=1974&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .navbar {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .navbar-brand {
+            color: #a5b4fc;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+        }
+        .navbar-brand:hover, .nav-link:hover, .nav-link.active {
+            color: #c084fc !important;
+        }
+        .nav-link { color: #e2e8f0; }
+        .hero {
+            padding: 10rem 0 4rem;
+            text-align: center;
+        }
+        .eyebrow {
+            color: #c084fc;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+        }
+        .hero h1 {
+            margin: 0.75rem 0 1rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 700;
+            background: linear-gradient(90deg, #818cf8, #c084fc, #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero p {
+            max-width: 680px;
+            margin: auto;
+            color: #cbd5e1;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        .feature-card, .process-card, .cta-card {
+            height: 100%;
+            background: rgba(30, 41, 59, 0.68);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.18);
+            backdrop-filter: blur(12px);
+        }
+        .feature-card {
+            padding: 1.75rem;
+            transition: transform 0.25s ease, border-color 0.25s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(192, 132, 252, 0.55);
+        }
+        .feature-icon {
+            display: grid;
+            width: 3.25rem;
+            height: 3.25rem;
+            margin-bottom: 1.25rem;
+            place-items: center;
+            color: #e9d5ff;
+            font-size: 1.3rem;
+            border: 1px solid rgba(192, 132, 252, 0.35);
+            border-radius: 14px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.35), rgba(168, 85, 247, 0.22));
+        }
+        .feature-card h2, .process-card h2 {
+            color: #f8fafc;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.05rem;
+        }
+        .feature-card p, .process-card p {
+            margin: 0;
+            color: #cbd5e1;
+            line-height: 1.7;
+        }
+        .section-heading {
+            margin-bottom: 2rem;
+            color: #f8fafc;
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            text-align: center;
+        }
+        .process-card {
+            padding: 1.5rem;
+        }
+        .step-number {
+            margin-bottom: 1rem;
+            color: #c084fc;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85rem;
+            letter-spacing: 0.12em;
+        }
+        .cta-card {
+            padding: clamp(2rem, 5vw, 3.5rem);
+            text-align: center;
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.3), rgba(168, 85, 247, 0.2)), rgba(30, 41, 59, 0.8);
+        }
+        .cta-card h2 {
+            color: #fff;
+            font-family: 'Orbitron', sans-serif;
+        }
+        .cta-card p { color: #cbd5e1; }
+        .btn-neural {
+            padding: 0.8rem 1.6rem;
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+            border: 0;
+            border-radius: 999px;
+            background: linear-gradient(135deg, #6366f1, #a855f7);
+            box-shadow: 0 10px 24px rgba(168, 85, 247, 0.25);
+        }
+        .btn-neural:hover { color: white; filter: brightness(1.12); }
+        .page-footer {
+            margin-top: 5rem;
+            padding: 1.5rem 0;
+            color: #fff;
+            text-align: center;
+            background: rgba(15, 23, 42, 0.9);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                scroll-behavior: auto !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('index') }}"><i class="fas fa-brain me-2"></i>NeuralArt</a>
+            <button class="navbar-toggler navbar-dark" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="{{ url_for('features') }}">Features</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('pricing') }}">Pricing</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('contact') }}">Contact</a></li>
+                </ul>
+                <a href="{{ url_for('index') }}" class="btn btn-sm btn-outline-light ms-lg-3 rounded-pill px-4">Try it</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="container">
+            <div class="eyebrow">Inside NeuralArt</div>
+            <h1>Creative control,<br>powered by AI</h1>
+            <p>Blend the structure of your photograph with the visual character of a style image. NeuralArt makes neural style transfer approachable, adjustable, and ready to explore.</p>
+        </div>
+    </header>
+
+    <main class="container pb-4">
+        <section class="mb-5" aria-labelledby="features-heading">
+            <h2 class="section-heading" id="features-heading">Made for creative exploration</h2>
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-4">
+                    <article class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-wand-magic-sparkles" aria-hidden="true"></i></div>
+                        <h2>AdaIN style transfer</h2>
+                        <p>Adaptive Instance Normalization aligns feature statistics from your style image with the content representation to create a new stylized image.</p>
+                    </article>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <article class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-sliders" aria-hidden="true"></i></div>
+                        <h2>Adjustable style strength</h2>
+                        <p>Use the style-strength control to blend the stylized features with the original content features, from the original appearance to full style transfer.</p>
+                    </article>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <article class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-layer-group" aria-hidden="true"></i></div>
+                        <h2>Encoder + decoder pipeline</h2>
+                        <p>A pretrained VGG encoder extracts image features, and the trained decoder turns the blended representation back into an image.</p>
+                    </article>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <article class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-microchip" aria-hidden="true"></i></div>
+                        <h2>GPU or CPU inference</h2>
+                        <p>When CUDA is available the model uses it for inference; otherwise it runs on the CPU, so a dedicated GPU is not required to try the app.</p>
+                    </article>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <article class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-image" aria-hidden="true"></i></div>
+                        <h2>Common image formats</h2>
+                        <p>Upload PNG, JPG, or JPEG images as your content and style references. The generated result can be viewed and downloaded.</p>
+                    </article>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <article class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-graduation-cap" aria-hidden="true"></i></div>
+                        <h2>Trainable decoder</h2>
+                        <p>The included training script lets you train a decoder with your own content and style image folders and save experiment checkpoints.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-5" aria-labelledby="workflow-heading">
+            <h2 class="section-heading" id="workflow-heading">From two images to a new look</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <article class="process-card">
+                        <div class="step-number">STEP 01</div>
+                        <h2>Choose your content</h2>
+                        <p>Start with a photograph or image whose shapes and subject you want to preserve.</p>
+                    </article>
+                </div>
+                <div class="col-md-4">
+                    <article class="process-card">
+                        <div class="step-number">STEP 02</div>
+                        <h2>Pick a visual style</h2>
+                        <p>Choose a painting, texture, or other image to guide the colors and visual character.</p>
+                    </article>
+                </div>
+                <div class="col-md-4">
+                    <article class="process-card">
+                        <div class="step-number">STEP 03</div>
+                        <h2>Set strength and create</h2>
+                        <p>Adjust the style strength, run the transfer, then preview or download your result.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta-card" aria-labelledby="cta-heading">
+            <h2 id="cta-heading">Ready to make something different?</h2>
+            <p class="my-3">Bring a content image and a style reference, and let NeuralArt combine them.</p>
+            <a href="{{ url_for('index') }}" class="btn btn-neural"><i class="fas fa-wand-magic-sparkles me-2" aria-hidden="true"></i>Open the style studio</a>
+        </section>
+    </main>
+
+    <footer class="page-footer">
+        <div class="container">
+            <span>NeuralArt</span>
+            <span class="mx-2">·</span>
+            <a class="link-light" href="https://github.com/Ashavmodhgill" target="_blank" rel="noopener noreferrer">GitHub</a>
+            <span class="mx-2">·</span>
+            <a class="link-light" href="{{ url_for('index') }}">Back to studio</a>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

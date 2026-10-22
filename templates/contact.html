@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact | NeuralArt</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/info-pages.css') }}">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('index') }}"><i class="fas fa-brain me-2"></i>NeuralArt</a>
+            <button class="navbar-toggler navbar-dark" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('features') }}">Features</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('pricing') }}">Pricing</a></li>
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="{{ url_for('contact') }}">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header class="page-hero">
+        <div class="container">
+            <div class="eyebrow">Let’s connect</div>
+            <h1>Contact</h1>
+            <p>Have a question, found an issue, or want to share what you made? Choose the best way to get in touch.</p>
+        </div>
+    </header>
+
+    <main class="container pb-4">
+        <section class="row g-4 justify-content-center" aria-label="Contact options">
+            <div class="col-md-6 col-lg-5">
+                <article class="glass-card">
+                    <div class="detail-icon mb-3"><i class="fas fa-envelope" aria-hidden="true"></i></div>
+                    <h2 class="h4">Email</h2>
+                    <p>For questions or general feedback, send an email and include a short description of what you need.</p>
+                    <a class="btn btn-neural mt-2" href="mailto:deepmodhgill9@gmail.com">
+                        <i class="fas fa-paper-plane me-2" aria-hidden="true"></i>Email NeuralArt
+                    </a>
+                </article>
+            </div>
+            <div class="col-md-6 col-lg-5">
+                <article class="glass-card">
+                    <div class="detail-icon mb-3"><i class="fab fa-github" aria-hidden="true"></i></div>
+                    <h2 class="h4">GitHub</h2>
+                    <p>Report a code issue, explore the project, or follow its development on GitHub.</p>
+                    <a class="btn btn-outline-light rounded-pill mt-2" href="https://github.com/Ashavmodhgill" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-github me-2" aria-hidden="true"></i>Visit GitHub profile
+                    </a>
+                </article>
+            </div>
+        </section>
+
+        <section class="row justify-content-center mt-4" aria-label="Contact guidance">
+            <div class="col-lg-10">
+                <div class="detail-card">
+                    <h3><i class="fas fa-circle-info detail-icon me-2" aria-hidden="true"></i>When reporting an issue</h3>
+                    <p class="mb-0">Please include the steps to reproduce the problem and any relevant error message. Avoid sending private images or credentials. NeuralArt is a project demo and does not provide a support-response-time guarantee.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="page-footer">
+        <div class="container">
+            <span>NeuralArt</span><span class="mx-2">·</span>
+            <a href="https://github.com/Ashavmodhgill" target="_blank" rel="noopener noreferrer">GitHub</a><span class="mx-2">·</span>
+            <a href="{{ url_for('pricing') }}">Pricing</a>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

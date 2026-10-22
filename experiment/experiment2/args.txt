@@ -1,0 +1,1 @@
+content_dir:C:\Users\Ashavdeep\NST_CODE\content_datastyle_dir:C:\Users\Ashavdeep\NST_CODE\style_datavgg:C:\Users\Ashavdeep\NST_CODE\utils\vgg_normalised.pthexperiment:experiment2final_size:256content_size:512style_size:512batch_size:4crop:Truelr:0.0001lr_decay:5e-05epochs:1content_weight:1.0style_weight:10log_interval:1
