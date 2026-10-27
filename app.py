@@ -36,9 +36,14 @@ class UploadForm(FlaskForm):
 
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+INFERENCE_MAX_SIZE = 192
 
 _models = None
 _models_lock = threading.Lock()
+_inference_lock = threading.Lock()
+
+if device.type == "cpu":
+    torch.set_num_threads(1)
 
 
 def get_models() -> tuple[VGGEncoder, Decoder]:
@@ -72,20 +77,17 @@ def allowed_file(filename):
 
 
 def style_transfer(content_image,style_image,encoder,decoder,alpha,device):
-    content_transform = transforms.Compose([
-        transforms.Resize(256),
-        transforms.ToTensor()
-    ])
+    content_image.thumbnail(
+        (INFERENCE_MAX_SIZE, INFERENCE_MAX_SIZE), Image.Resampling.LANCZOS
+    )
+    style_image.thumbnail(
+        (INFERENCE_MAX_SIZE, INFERENCE_MAX_SIZE), Image.Resampling.LANCZOS
+    )
+    to_tensor = transforms.ToTensor()
+    content_image = to_tensor(content_image).unsqueeze(0).to(device)
+    style_image = to_tensor(style_image).unsqueeze(0).to(device)
 
-    style_transform = transforms.Compose([
-        transforms.Resize(256),
-        transforms.ToTensor()
-    ])
-
-    content_image = content_transform(content_image).unsqueeze(0).to(device)
-    style_image = style_transform(style_image).unsqueeze(0).to(device)
-
-    with torch.no_grad():
+    with torch.inference_mode():
         content_feats = encoder(content_image, is_test=True)
         style_feats = encoder(style_image, is_test=True)
 
@@ -94,6 +96,7 @@ def style_transfer(content_image,style_image,encoder,decoder,alpha,device):
 
         stylized_image = decoder(stylized_feats)
 
+    del content_image, style_image, content_feats, style_feats, stylized_feats
     return stylized_image
 
     
@@ -135,12 +138,25 @@ def index():
             content_path =  os.path.join(app.config['UPLOAD_FOLDER'],content_filename)
             style_path = os.path.join(app.config['UPLOAD_FOLDER'],style_filename)
             try:
-              content_image= Image.open(content_path).convert('RGB')
-              style_image = Image.open(style_path).convert('RGB')
+              with Image.open(content_path) as source_image:
+                  source_image.thumbnail(
+                      (INFERENCE_MAX_SIZE, INFERENCE_MAX_SIZE),
+                      Image.Resampling.LANCZOS,
+                  )
+                  content_image = source_image.convert('RGB')
+              with Image.open(style_path) as source_image:
+                  source_image.thumbnail(
+                      (INFERENCE_MAX_SIZE, INFERENCE_MAX_SIZE),
+                      Image.Resampling.LANCZOS,
+                  )
+                  style_image = source_image.convert('RGB')
 
-              alpha = float(form.alpha.data)
-              encoder, decoder = get_models()
-              stylized_image = style_transfer(content_image,style_image,encoder,decoder,alpha,device)
+              with _inference_lock:
+                  encoder, decoder = get_models()
+                  stylized_image = style_transfer(
+                      content_image, style_image, encoder, decoder,
+                      float(form.alpha.data), device
+                  )
 
               result_filename = 'stylized' + content_filename
               result_path = os.path.join(app.config['UPLOAD_FOLDER'],result_filename)

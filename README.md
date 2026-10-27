@@ -125,4 +125,6 @@ command and `gunicorn --bind 0.0.0.0:$PORT app:app` as the start command. A
 custom start command in the Render dashboard overrides the `Procfile`, so make
 sure it binds to Render's `PORT`. The models are loaded on the first style
 transfer request rather than during server startup; the first transfer may
-take longer while the weights are loaded.
+take longer while the weights are loaded. For lower memory use on small
+instances, uploaded images are resized to fit within 192 by 192 pixels before
+inference; generated results are therefore smaller than the original upload.
