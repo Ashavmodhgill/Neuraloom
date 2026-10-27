@@ -39,33 +39,17 @@ class VGGEncoder(nn.Module):
             nn.ReflectionPad2d((1, 1, 1, 1)),
             nn.Conv2d(256, 512, (3, 3)),
             nn.ReLU(),  # relu4-1, this is the last layer used
-            nn.ReflectionPad2d((1, 1, 1, 1)),
-            nn.Conv2d(512, 512, (3, 3)),
-            nn.ReLU(),  # relu4-2
-            nn.ReflectionPad2d((1, 1, 1, 1)),
-            nn.Conv2d(512, 512, (3, 3)),
-            nn.ReLU(),  # relu4-3
-            nn.ReflectionPad2d((1, 1, 1, 1)),
-            nn.Conv2d(512, 512, (3, 3)),
-            nn.ReLU(),  # relu4-4
-            nn.MaxPool2d((2, 2), (2, 2), (0, 0), ceil_mode=True),
-            nn.ReflectionPad2d((1, 1, 1, 1)),
-            nn.Conv2d(512, 512, (3, 3)),
-            nn.ReLU(),  # relu5-1
-            nn.ReflectionPad2d((1, 1, 1, 1)),
-            nn.Conv2d(512, 512, (3, 3)),
-            nn.ReLU(),  # relu5-2
-            nn.ReflectionPad2d((1, 1, 1, 1)),
-            nn.Conv2d(512, 512, (3, 3)),
-            nn.ReLU(),  # relu5-3
-            nn.ReflectionPad2d((1, 1, 1, 1)),
-            nn.Conv2d(512, 512, (3, 3)),
-            nn.ReLU()  # relu5-4
         )
 
-        # to get the outputs of intermediate layers
-        self.vgg.load_state_dict(torch.load(vgg_path, map_location='cpu', weights_only=True))
-        self.vgg = nn.Sequential(* list(self.vgg.children())[:31])
+        vgg_weights = torch.load(
+            vgg_path, map_location='cpu', weights_only=True
+        )
+        vgg_weights = {
+            key: value
+            for key, value in vgg_weights.items()
+            if int(key.split('.', maxsplit=1)[0]) < len(self.vgg)
+        }
+        self.vgg.load_state_dict(vgg_weights)
         enc_layers = list(self.vgg.children())
         self.enc_1 = nn.Sequential(*enc_layers[:4])
         self.enc_2 = nn.Sequential(*enc_layers[4:11])

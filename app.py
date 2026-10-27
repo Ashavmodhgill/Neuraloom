@@ -1,4 +1,5 @@
 import os
+import threading
 import torch
 from flask import Flask, render_template, request, redirect, url_for, send_from_directory
 from flask_wtf import FlaskForm
@@ -36,13 +37,34 @@ class UploadForm(FlaskForm):
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-encoder = VGGEncoder(os.path.join(BASE_DIR, 'utils', 'vgg_normalised.pth')).to(device)
-decoder = Decoder().to(device)
-decoder_path = os.path.join(BASE_DIR, 'experiment', 'decoder_final.pth')
-decoder.load_state_dict({k.replace("net.", "decoder.", 1): v for k, v in torch.load(decoder_path, map_location=device, weights_only=True).items()})
+_models = None
+_models_lock = threading.Lock()
 
-encoder.eval()
-decoder.eval()
+
+def get_models() -> tuple[VGGEncoder, Decoder]:
+    global _models
+    if _models is None:
+        with _models_lock:
+            if _models is None:
+                encoder = VGGEncoder(
+                    os.path.join(BASE_DIR, 'utils', 'vgg_normalised.pth')
+                ).to(device)
+                decoder = Decoder().to(device)
+                decoder_path = os.path.join(BASE_DIR, 'experiment', 'decoder_final.pth')
+                decoder_weights = torch.load(
+                    decoder_path, map_location='cpu', weights_only=True, mmap=True
+                )
+                decoder.load_state_dict({
+                    key.replace("net.", "decoder.", 1): value
+                    for key, value in decoder_weights.items()
+                })
+                encoder.eval()
+                decoder.eval()
+                _models = (encoder, decoder)
+    models = _models
+    if models is None:
+        raise RuntimeError("Model initialization did not complete.")
+    return models
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -117,6 +139,7 @@ def index():
               style_image = Image.open(style_path).convert('RGB')
 
               alpha = float(form.alpha.data)
+              encoder, decoder = get_models()
               stylized_image = style_transfer(content_image,style_image,encoder,decoder,alpha,device)
 
               result_filename = 'stylized' + content_filename
