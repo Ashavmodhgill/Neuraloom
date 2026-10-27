@@ -36,7 +36,7 @@ class UploadForm(FlaskForm):
 
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-INFERENCE_MAX_SIZE = 192
+INFERENCE_SIZE = 256
 
 _models = None
 _models_lock = threading.Lock()
@@ -77,15 +77,10 @@ def allowed_file(filename):
 
 
 def style_transfer(content_image,style_image,encoder,decoder,alpha,device):
-    content_image.thumbnail(
-        (INFERENCE_MAX_SIZE, INFERENCE_MAX_SIZE), Image.Resampling.LANCZOS
-    )
-    style_image.thumbnail(
-        (INFERENCE_MAX_SIZE, INFERENCE_MAX_SIZE), Image.Resampling.LANCZOS
-    )
+    resize = transforms.Resize(INFERENCE_SIZE)
     to_tensor = transforms.ToTensor()
-    content_image = to_tensor(content_image).unsqueeze(0).to(device)
-    style_image = to_tensor(style_image).unsqueeze(0).to(device)
+    content_image = to_tensor(resize(content_image)).unsqueeze(0).to(device)
+    style_image = to_tensor(resize(style_image)).unsqueeze(0).to(device)
 
     with torch.inference_mode():
         content_feats = encoder(content_image, is_test=True)
@@ -139,16 +134,8 @@ def index():
             style_path = os.path.join(app.config['UPLOAD_FOLDER'],style_filename)
             try:
               with Image.open(content_path) as source_image:
-                  source_image.thumbnail(
-                      (INFERENCE_MAX_SIZE, INFERENCE_MAX_SIZE),
-                      Image.Resampling.LANCZOS,
-                  )
                   content_image = source_image.convert('RGB')
               with Image.open(style_path) as source_image:
-                  source_image.thumbnail(
-                      (INFERENCE_MAX_SIZE, INFERENCE_MAX_SIZE),
-                      Image.Resampling.LANCZOS,
-                  )
                   style_image = source_image.convert('RGB')
 
               with _inference_lock:
